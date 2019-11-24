@@ -49,3 +49,61 @@ $.ajax({
         console.log(result);
     }
 });
+
+//Exception Handling
+
+//GET
+$.get('/speakers/99', function(data){
+    console.log(data);
+}).fail(function(data){
+    console.log(data.responseJSON.message);
+})
+
+//PUT bad id
+$.ajax({
+    url: '/speakers/99',
+    type: 'PUT',
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify({ "first_name": "Kioh", "last_name": "Han", "title": "Engineer", "company": "DTCI", "speaker_bio": "Test2" }),
+}).fail(function(xhr, status, error) {
+	console.log(xhr.responseJSON);
+});
+
+//bad request
+$.ajax({
+    url: '/speakers/2',
+    type: 'PUT',
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify({ "first_name": "Kioh", "last_name": "Han", "title": "Engineer", "company": "DTCI" }),
+}).fail(function(xhr, status, error) {
+	console.log(xhr.responseJSON);
+});
+
+//POST bad request
+var data = {
+    "first_name": "Lily", 
+    "last_name": "Han", 
+    "title": "Child"
+};
+$.ajax({
+   url: '/speakers',
+   type: 'POST',
+   contentType: "application/json",
+   dataType: "json",
+   data: JSON.stringify(data)
+}).fail(function(xhr, status, error){
+    console.log(xhr.responseJSON);
+});
+
+//DELETE bad id
+$.ajax({
+    url: '/speakers/99',
+    type: 'DELETE',
+    success: function (result) {
+        console.log(result);
+    }
+}).fail(function(xhr, status, error) {
+	console.log(xhr.responseJSON);
+});

@@ -22,12 +22,12 @@ public class SpeakerService {
         return speakers.stream().map(SpeakerDTO::of).collect(Collectors.toList());
     }
 
-    public SpeakerDTO findOne(Long id) {
+    public SpeakerDTO findOne(Long id) throws Exception {
         Optional<Speaker> speaker = speakerRepository.findById(id);
         return SpeakerDTO.of(speaker.get());
     }
 
-    public SpeakerDTO create(SpeakerDTO speakerDTO){
+    public SpeakerDTO create(SpeakerDTO speakerDTO) throws Exception {
         Speaker speaker = Speaker.builder()
             .speaker_id(speakerDTO.getSpeaker_id())
             .first_name(speakerDTO.getFirst_name())
@@ -40,7 +40,10 @@ public class SpeakerService {
         return SpeakerDTO.of(createdSpeaker);
     }
 
-    public SpeakerDTO update(SpeakerDTO speakerDTO, Long id){
+    public SpeakerDTO update(SpeakerDTO speakerDTO, Long id) throws Exception {
+        if(!speakerRepository.existsById(id)){
+            throw new Exception("Speaker: " + id.toString() + " not found");
+        }
         Speaker speaker = speakerRepository.findById(id).get();
         speaker.setFirst_name(speakerDTO.getFirst_name());
         speaker.setLast_name(speakerDTO.getLast_name());
@@ -50,7 +53,7 @@ public class SpeakerService {
         return SpeakerDTO.of(speakerRepository.save(speaker));
     }
 
-    public String delete(Long id){
+    public String delete(Long id) throws Exception {
         speakerRepository.deleteById(id);
         return "id " + id.toString() + " deleted";
     }
