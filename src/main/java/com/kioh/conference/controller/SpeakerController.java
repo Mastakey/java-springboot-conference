@@ -3,8 +3,10 @@ package com.kioh.conference.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.kioh.conference.dto.SpeakerDTO;
 import com.kioh.conference.entity.Speaker;
 import com.kioh.conference.repository.SpeakerRepository;
+import com.kioh.conference.service.SpeakerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,19 +23,22 @@ public class SpeakerController {
     @Autowired
     private SpeakerRepository speakerRepository;
 
+    @Autowired
+    private SpeakerService speakerService;
+
     @GetMapping(value = "/speakers", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Speaker> findAll() {
-        return speakerRepository.findAll();
+    public List<SpeakerDTO> findAll() {
+        return speakerService.getSpeakers();
     }
 
     @GetMapping(value = "/speakers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<Speaker> get(@PathVariable Long id) {
-        return speakerRepository.findById(id);
+    public SpeakerDTO get(@PathVariable Long id) {
+        return speakerService.findOne(id);
     }
 
     @PostMapping(value = "/speakers", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Speaker post(@RequestBody Speaker newSpeaker){
-        return speakerRepository.save(newSpeaker);
+    public SpeakerDTO add(@RequestBody SpeakerDTO newSpeaker){
+        return speakerService.create(newSpeaker);
     }
 
     @PutMapping(value = "/speakers/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
