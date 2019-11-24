@@ -40,5 +40,20 @@ public class SpeakerService {
         return SpeakerDTO.of(createdSpeaker);
     }
 
-    
+    public SpeakerDTO update(SpeakerDTO speakerDTO, Long id){
+        Speaker speaker = speakerRepository.findById(id).get();
+        speaker.setFirst_name(speakerDTO.getFirst_name());
+        speaker.setLast_name(speakerDTO.getLast_name());
+        speaker.setCompany(speakerDTO.getCompany());
+        speaker.setSpeaker_bio(speakerDTO.getSpeaker_bio());
+        speaker.setTitle(speakerDTO.getTitle());
+        return SpeakerDTO.of(speakerRepository.save(speaker));
+    }
+
+    public String delete(Long id){
+        speakerRepository.deleteById(id);
+        return "id " + id.toString() + " deleted";
+    }
+
+
 }
